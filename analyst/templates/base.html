@@ -15,13 +15,25 @@
       <!-- Sidebar / Navigation -->
       <aside class="w-64 bg-slate-800 border-r border-slate-700 p-6">
         <h1 class="text-xl font-bold text-blue-400 mb-8">QuantAnalyst</h1>
-        <nav class="space-y-4">
-          <a href="{% url 'dashboard' %}" class="block text-slate-300 hover:text-white"
-            >Dashboard</a
-          >
-          <a href="{% url 'analysis_lab' %}" class="block text-white font-semibold">Analysis Lab</a>
-          <a href="{% url 'vault' %}" class="block text-slate-300 hover:text-white">Vault</a>
-        </nav>
+      <nav class="space-y-4">
+          {% url 'dashboard' as url_dash %}
+          <a href="{{ url_dash }}" 
+            class="block transition-colors {% if request.path == url_dash %}text-white font-semibold{% else %}text-slate-400 hover:text-white{% endif %}">
+            Dashboard
+          </a>
+          
+          {% url 'analysis_lab' as url_lab %}
+          <a href="{{ url_lab }}" 
+            class="block transition-colors {% if request.path == url_lab %}text-white font-semibold{% else %}text-slate-400 hover:text-white{% endif %}">
+            Analysis Lab
+          </a>
+          
+          {% url 'vault' as url_vault %}
+          <a href="{{ url_vault }}" 
+            class="block transition-colors {% if url_vault in request.path %}text-white font-semibold{% else %}text-slate-400 hover:text-white{% endif %}">
+            Vault
+          </a>
+      </nav>
       </aside>
 
       <!-- Main Content (The 3-Column Area) -->
