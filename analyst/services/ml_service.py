@@ -16,10 +16,15 @@ class MLService:
 
     def analyze_sentiment(self, news_articles: list) -> dict:
         """Runs PyTorch/FinBERT on news headlines."""
+        print(f"DEBUG: Received {len(news_articles)} news articles")
         if not news_articles:
             return {"bullish": 0, "bearish": 0, "neutral": 0, "overall": "No Data"}
 
-        texts = [article.get("title", "") for article in news_articles][:10]
+        texts = [
+            (article.get("title") or article.get("summary", ""))
+            for article in news_articles
+        ][:10]
+        print(f"DEBUG: Texts for sentiment analysis: {texts}")
         results = self.sentiment_analyzer(texts)
 
         # Tally the results

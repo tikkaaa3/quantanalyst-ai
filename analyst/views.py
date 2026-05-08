@@ -20,7 +20,13 @@ def run_analysis(request):
     try:
         # 1. Fetch Data
         df = data_service.fetch_stock_data(ticker)
-        news = data_service.fetch_news_sentiment(ticker)
+
+        # 2. Fetch News (isolated failure handling)
+        news = []
+        try:
+            news = data_service.fetch_news_sentiment(ticker)
+        except Exception as e:
+            print(f"DEBUG: News service failed: {e}")
 
         # 2. Run ML Models
         xgboost_prob = ml_service.predict_price_movement(df)
