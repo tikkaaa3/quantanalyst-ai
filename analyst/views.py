@@ -1,6 +1,7 @@
 from django.shortcuts import render
 from .services.data_service import DataService
 from .services.ml_service import MLService
+from .services.agent_graph import QuantAgent
 
 
 def analysis_lab(request):
@@ -19,7 +20,16 @@ def analysis_lab(request):
         xgboost_prob = ml_service.predict_price_movement(df)
         sentiment = ml_service.analyze_sentiment(news)
 
-        # 3. Populate Context
+        # 3. Agent Synthesis
+        agent = QuantAgent()
+        ai_report = agent.run(
+            ticker=ticker,
+            price=round(df["close"].iloc[-1], 2),
+            score=xgboost_prob,
+            sentiment=sentiment,
+        )
+
+        # 4. Populate Context
         context.update(
             {
                 "latest_price": round(df["close"].iloc[-1], 2),
@@ -28,6 +38,7 @@ def analysis_lab(request):
                 "news": news[:5],
                 "prediction_score": xgboost_prob * 100,  # Convert to percentage
                 "sentiment": sentiment,
+                "ai_report": ai_report,
             }
         )
     except Exception as e:
