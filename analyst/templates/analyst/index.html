@@ -30,8 +30,28 @@
       <p class="text-slate-400">20-Day SMA: ${{ latest_sma }}</p>
     </div>
 
-    <!-- Col 2: News -->
-    <div class="bg-slate-800 p-6 rounded-xl border border-slate-700 col-span-2">
+    <!-- Col 2: AI Prediction -->
+    <div class="bg-slate-800 p-6 rounded-xl border border-slate-700">
+      <h2 class="text-xl font-bold mb-4">AI Prediction</h2>
+      <p class="text-sm text-slate-400 mb-2">Bullish Probability</p>
+      <div class="w-full bg-slate-700 rounded-full h-4">
+        <div
+          class="h-4 rounded-full {% if prediction_score > 50 %}bg-green-500{% else %}bg-red-500{% endif %}"
+          style="width: {{ prediction_score }}%"
+        ></div>
+      </div>
+      <p class="mt-2 text-2xl font-mono">{{ prediction_score }}%</p>
+    </div>
+
+    <!-- Col 3: Sentiment & News -->
+    <div class="bg-slate-800 p-6 rounded-xl border border-slate-700">
+      <h2 class="text-xl font-bold mb-4">Market Sentiment</h2>
+      <div class="flex gap-2 mb-6">
+        <span class="px-2 py-1 rounded-full text-sm font-bold bg-green-500 text-white">Positive: {{ sentiment.positive }}</span>
+        <span class="px-2 py-1 rounded-full text-sm font-bold bg-red-500 text-white">Negative: {{ sentiment.negative }}</span>
+        <span class="px-2 py-1 rounded-full text-sm font-bold bg-slate-500 text-white">Neutral: {{ sentiment.neutral }}</span>
+      </div>
+
       <h2 class="text-xl font-bold mb-4">Latest News ({{ news_count }})</h2>
       <ul class="space-y-4">
         {% for article in news %}
