@@ -21,6 +21,9 @@
       <div class="bg-slate-900 p-4 rounded text-sm text-slate-300">
         {{ report.ai_report|truncatechars:150 }}
       </div>
+      <a href="{% url 'report_detail' report.pk %}" class="inline-block mt-4 text-blue-400 hover:text-blue-300 text-sm font-semibold">
+        Read Full Report →
+      </a>
     </div>
     {% empty %}
     <div class="col-span-full text-slate-400 text-center py-12">

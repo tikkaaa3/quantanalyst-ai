@@ -1,0 +1,42 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="p-8">
+  <h1 class="text-3xl font-bold text-blue-400 mb-8">QuantAnalyst Dashboard</h1>
+
+  <div class="bg-slate-800 p-6 rounded-xl border border-slate-700 mb-8 max-w-sm">
+    <p class="text-sm text-slate-400 uppercase tracking-wide">Total Analyses</p>
+    <p class="text-4xl font-bold text-white mt-2">{{ total_analyses }}</p>
+  </div>
+
+  <h2 class="text-2xl font-bold text-white mb-6">Recent Activity</h2>
+  <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+    {% for report in recent_reports %}
+    <div class="bg-slate-800 p-6 rounded-xl border border-slate-700">
+      <div class="flex justify-between items-start mb-4">
+        <h2 class="text-2xl font-bold text-white">{{ report.ticker }}</h2>
+        <span class="text-sm text-slate-400">{{ report.created_at|date:"Y-m-d H:i" }}</span>
+      </div>
+      <div class="space-y-2 mb-4">
+        <p class="text-slate-300">Price: <span class="text-white font-mono">${{ report.current_price }}</span></p>
+        <p class="text-slate-300">XGBoost Score:
+          <span class="font-bold {% if report.prediction_score > 50 %}text-green-400{% else %}text-red-400{% endif %}">
+            {{ report.prediction_score|floatformat:2 }}%
+          </span>
+        </p>
+      </div>
+      <div class="bg-slate-900 p-4 rounded text-sm text-slate-300 mb-4">
+        {{ report.ai_report|truncatechars:150 }}
+      </div>
+      <a href="{% url 'report_detail' report.pk %}" class="text-blue-400 hover:text-blue-300 text-sm font-semibold">
+        Read Full Report →
+      </a>
+    </div>
+    {% empty %}
+    <div class="col-span-full text-slate-400 text-center py-12">
+      No analysis reports found.
+    </div>
+    {% endfor %}
+  </div>
+</div>
+{% endblock %}

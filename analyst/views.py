@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import render, get_object_or_404
 import plotly.graph_objects as go
 from .services.data_service import DataService
 from .services.ml_service import MLService
@@ -99,3 +99,18 @@ def run_analysis(request):
 def vault(request):
     reports = AnalysisReport.objects.all().order_by("-created_at")
     return render(request, "analyst/vault.html", {"reports": reports})
+
+
+def dashboard(request):
+    total_analyses = AnalysisReport.objects.count()
+    recent_reports = AnalysisReport.objects.order_by("-created_at")[:3]
+    return render(
+        request,
+        "analyst/dashboard.html",
+        {"total_analyses": total_analyses, "recent_reports": recent_reports},
+    )
+
+
+def report_detail(request, pk):
+    report = get_object_or_404(AnalysisReport, pk=pk)
+    return render(request, "analyst/report_detail.html", {"report": report})
